@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: '20%',
         fontSize: 45,
-        fontWeight: 600,
+        fontWeight: 'bold',
         color: '#FFFFFF',
     },
     box1: {
@@ -124,11 +124,11 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#FFFFFF',
         fontSize: 16,
-        fontWeight: 600,
+        fontWeight: 'bold',
     },
     smallText: {
         fontSize: 16,
         fontWeight: 'normal',
-        fontColor: '#757083'
+        color: '#757083'
     }
 })
