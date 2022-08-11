@@ -15,7 +15,7 @@ export default class Start extends Component {
         return (
             <View style={styles.container}>
                 <ImageBackground source={require('../assets/Background-Image.png')} style={styles.image}>
-                    <Text style={styles.title}>App Title</Text>
+                    <Text style={styles.title}>Chat App</Text>
                     <View style={styles.box1}>
                         <TextInput style={[styles.input, styles.smallText]}
                             placeholder='Your Name'
