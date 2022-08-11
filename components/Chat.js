@@ -13,18 +13,18 @@ export default class Chat extends Component {
 
     renderBubble(props) {
         //const color = (this.props.route.params.color === '#474056') ? '#B9C6AE' : '#474056';
-        let color;
-        if (this.props.route.params.color === '#090C08') color = '#8A95A5'
-        else if (this.props.route.params.color === '#474056') color = '#B9C6AE'
-        else if (this.props.route.params.color === '#8A95A5') color = '#B9C6AE'
-        else if (this.props.route.params.color === '#B9C6AE') color = '#474056'
+        let bubbleColor;
+        if (this.props.route.params.color === '#090C08') bubbleColor = '#8A95A5'
+        else if (this.props.route.params.color === '#474056') bubbleColor = '#a1ad97'
+        else if (this.props.route.params.color === '#8A95A5') bubbleColor = '#a1ad97'
+        else if (this.props.route.params.color === '#B9C6AE') bubbleColor = '#474056'
 
         return (
             <Bubble
                 {...props}
                 wrapperStyle={{
                     right: {
-                        backgroundColor: color
+                        backgroundColor: bubbleColor
                     }
                 }}
             />
@@ -35,7 +35,7 @@ export default class Chat extends Component {
         return <Day {...props} textStyle={{ color: 'white' }} />
     }
 
-    renderTime(props) {
+    /*renderTime(props) {
         return (
             <Time
                 {...props}
@@ -49,7 +49,7 @@ export default class Chat extends Component {
                 }}
             />
         );
-    };
+    };*/
 
     renderSystemMessage(props) {
         return <SystemMessage {...props} textStyle={{ color: 'white' }} />
@@ -72,7 +72,6 @@ export default class Chat extends Component {
                 <GiftedChat
                     renderBubble={this.renderBubble.bind(this)}
                     renderDay={this.renderDay.bind(this)}
-                    renderTime={this.renderTime.bind(this)}
                     renderSystemMessage={this.renderSystemMessage.bind(this)}
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
