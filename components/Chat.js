@@ -45,9 +45,7 @@ export default class Chat extends Component {
     };
 
     renderSystemMessage(props) {
-        return (
-            <SystemMessage {...props} textStyle={{ color: 'white' }} />
-        )
+        return <SystemMessage {...props} textStyle={{ color: 'white' }} />
     }
 
 
@@ -103,7 +101,7 @@ export default class Chat extends Component {
                 },
                 {
                     _id: 2,
-                    text: 'This is a system message',
+                    text: `${name} has entered the chat`,
                     createdAt: new Date(),
                     system: true,
                 },
@@ -115,8 +113,5 @@ export default class Chat extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    text: {
-        color: '#FFFFFF',
     },
 })
