@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
-import { StyleSheet, ScrollView, Text, ImageBackground, TextInput, Button } from 'react-native';
-import { GiftedChat, Bubble, SystemMessage, Day, Time } from 'react-native-gifted-chat';
+import { StyleSheet } from 'react-native';
+import { GiftedChat, Bubble, SystemMessage, Day } from 'react-native-gifted-chat';
 
 export default class Chat extends Component {
     // CUSTOM METHODS
@@ -34,22 +34,6 @@ export default class Chat extends Component {
     renderDay(props) {
         return <Day {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
-
-    /*renderTime(props) {
-        return (
-            <Time
-                {...props}
-                timeTextStyle={{
-                    left: {
-                        color: 'black',
-                    },
-                    right: {
-                        color: 'white',
-                    },
-                }}
-            />
-        );
-    };*/
 
     renderSystemMessage(props) {
         return <SystemMessage {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
