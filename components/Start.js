@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ImageBackground, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class Start extends Component {
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     },
     title: {
         flex: 1,
+        fontFamily: 'Poppins-Bold',
         padding: '20%',
         fontSize: 45,
         fontWeight: 'bold',
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
+        fontFamily: 'Poppins-Regular',
         width: '88%',
         padding: '2%',
         height: 50,
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
         marginLeft: '6%',
     },
     label: {
+        fontFamily: 'Poppins-Regular',
         marginBottom: '8%',
     },
     colors: {
@@ -122,6 +125,7 @@ const styles = StyleSheet.create({
         borderRadius: 2,
     },
     buttonText: {
+        fontFamily: 'Poppins-Bold',
         color: '#FFFFFF',
         fontSize: 16,
         fontWeight: 'bold',
