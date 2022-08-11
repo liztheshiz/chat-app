@@ -18,6 +18,7 @@ export default class App extends Component {
         await Font.loadAsync({
             'Poppins-Regular': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
             'Poppins-Bold': require('./assets/fonts/Poppins/Poppins-Bold.ttf'),
+            'Poppins-Light': require('./assets/fonts/Poppins/Poppins-Light.ttf'),
         });
         this.setState({ fontsLoaded: true });
     }

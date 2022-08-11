@@ -27,12 +27,28 @@ export default class Chat extends Component {
                         backgroundColor: bubbleColor
                     }
                 }}
+                textStyle={{
+                    left: {
+                        fontFamily: 'Poppins-Light'
+                    },
+                    right: {
+                        fontFamily: 'Poppins-Light'
+                    }
+                }}
+                timeTextStyle={{
+                    left: {
+                        fontFamily: 'Poppins-Light'
+                    },
+                    right: {
+                        fontFamily: 'Poppins-Light'
+                    }
+                }}
             />
         )
     }
 
     renderDay(props) {
-        return <Day {...props} textStyle={{ color: 'white' }} />
+        return <Day {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
 
     /*renderTime(props) {
@@ -52,7 +68,7 @@ export default class Chat extends Component {
     };*/
 
     renderSystemMessage(props) {
-        return <SystemMessage {...props} textStyle={{ color: 'white' }} />
+        return <SystemMessage {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
 
 
