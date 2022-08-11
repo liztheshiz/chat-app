@@ -27,22 +27,6 @@ export default class Chat extends Component {
                         backgroundColor: bubbleColor
                     }
                 }}
-                textStyle={{
-                    left: {
-                        fontFamily: 'Poppins-Light'
-                    },
-                    right: {
-                        fontFamily: 'Poppins-Light'
-                    }
-                }}
-                timeTextStyle={{
-                    left: {
-                        fontFamily: 'Poppins-Light'
-                    },
-                    right: {
-                        fontFamily: 'Poppins-Light'
-                    }
-                }}
             />
         )
     }
