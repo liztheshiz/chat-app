@@ -12,12 +12,19 @@ export default class Chat extends Component {
     }
 
     renderBubble(props) {
+        //const color = (this.props.route.params.color === '#474056') ? '#B9C6AE' : '#474056';
+        let color;
+        if (this.props.route.params.color === '#090C08') color = '#8A95A5'
+        else if (this.props.route.params.color === '#474056') color = '#B9C6AE'
+        else if (this.props.route.params.color === '#8A95A5') color = '#B9C6AE'
+        else if (this.props.route.params.color === '#B9C6AE') color = '#474056'
+
         return (
             <Bubble
                 {...props}
                 wrapperStyle={{
                     right: {
-                        backgroundColor: '#000'
+                        backgroundColor: color
                     }
                 }}
             />
