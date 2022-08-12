@@ -3,6 +3,9 @@ import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { GiftedChat, Bubble, SystemMessage, Day } from 'react-native-gifted-chat';
 
+const firebase = require('firebase');
+require('firebase/firestore');
+
 export default class Chat extends Component {
     // CUSTOM METHODS
     onSend(messages = []) {
@@ -12,7 +15,6 @@ export default class Chat extends Component {
     }
 
     renderBubble(props) {
-        //const color = (this.props.route.params.color === '#474056') ? '#B9C6AE' : '#474056';
         let bubbleColor;
         if (this.props.route.params.color === '#090C08') bubbleColor = '#8A95A5'
         else if (this.props.route.params.color === '#474056') bubbleColor = '#a1ad97'
@@ -39,6 +41,24 @@ export default class Chat extends Component {
         return <SystemMessage {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
 
+    onCollectionUpdate = (querySnapshot) => {
+        const messages = [];
+        // go through each document
+        querySnapshot.forEach((doc) => {
+            // get the QueryDocumentSnapshot's data
+            var data = doc.data();
+            messages.push({
+                _id: data._id,
+                text: data.text,
+                createdAt: data.createdAt.toDate(),
+                user: data.user, // this is an object! do I need to push individual props in user object?
+            });
+        });
+        this.setState({
+            messages,
+        });
+    };
+
 
     // LIFECYCLE METHODS
     constructor() {
@@ -46,6 +66,22 @@ export default class Chat extends Component {
         this.state = {
             messages: [],
         }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCInaMPfpqaogmo1HhyH6DJhHGwmYwr5t4",
+            authDomain: "chat-app-2c26d.firebaseapp.com",
+            projectId: "chat-app-2c26d",
+            storageBucket: "chat-app-2c26d.appspot.com",
+            messagingSenderId: "935609770809",
+            appId: "1:935609770809:web:d8487f812f59de102d3ee8",
+            measurementId: "G-XY1HED78LK"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        this.referenceChatMessages = firebase.firestore().collection('messages');
     }
 
     render() {
@@ -77,7 +113,24 @@ export default class Chat extends Component {
     componentDidMount() {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
-        this.setState({
+
+        this.referenceChatMessages = firebase.firestore().collection('messages');
+        if (this.referenceChatMessages) {
+            this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
+        } else {
+            this.setState({
+                messages: [
+                    {
+                        _id: 2,
+                        text: `${name} has entered the chat`,
+                        createdAt: new Date(),
+                        system: true,
+                    },
+                ]
+            });
+        }
+
+        /*this.setState({
             messages: [
                 {
                     _id: 1,
@@ -96,7 +149,11 @@ export default class Chat extends Component {
                     system: true,
                 },
             ],
-        })
+        })*/
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 }
 
