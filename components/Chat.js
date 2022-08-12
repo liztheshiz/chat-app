@@ -9,9 +9,20 @@ require('firebase/firestore');
 export default class Chat extends Component {
     // CUSTOM METHODS
     onSend(messages = []) {
+        // First add new message to state
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
-        }))
+        }));
+        // Then add this message to database
+        // should check to see if online before attempting to do this?
+        const newMessage = this.state.messages[0]
+        this.referenceChatMessages.add({
+            _id: newMessage._id,
+            text: newMessage.text,
+            createdAt: newMessage.createdAt.toDate(),
+            user: newMessage.user,
+            system: newMessage.system,
+        })
     }
 
     renderBubble(props) {
@@ -51,7 +62,8 @@ export default class Chat extends Component {
                 _id: data._id,
                 text: data.text,
                 createdAt: data.createdAt.toDate(),
-                user: data.user, // this is an object! do I need to push individual props in user object?
+                user: data.user,
+                system: data.system,
             });
         });
         this.setState({
