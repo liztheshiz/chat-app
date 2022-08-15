@@ -15,13 +15,13 @@ export default class Chat extends Component {
         }));
         // Then add this message to database
         // should check to see if online before attempting to do this?
-        const newMessage = this.state.messages[0]
+        const newMessage = messages[messages.length - 1] //this.state.messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
             text: newMessage.text,
-            createdAt: newMessage.createdAt.toDate(),
+            createdAt: newMessage.createdAt,
             user: newMessage.user,
-            system: newMessage.system,
+            system: false,
         })
     }
 
@@ -108,7 +108,7 @@ export default class Chat extends Component {
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
-                        _id: 1,
+                        _id: 2,
                     }}
                 />
                 {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
@@ -121,14 +121,15 @@ export default class Chat extends Component {
         this.props.navigation.setOptions({ title: name });
 
         this.referenceChatMessages = firebase.firestore().collection('messages');
+
         if (this.referenceChatMessages) {
             this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
         } else {
             this.setState({
                 messages: [
                     {
-                        _id: 2,
-                        text: `${name} has entered the chat`,
+                        _id: 1,
+                        text: `Unable to connect to chat`,
                         createdAt: new Date(),
                         system: true,
                     },
