@@ -8,14 +8,10 @@ require('firebase/firestore');
 
 export default class Chat extends Component {
     // CUSTOM METHODS
+    // Adds message to firestore on send
     onSend(messages = []) {
-        // First add new message to state
-        /*this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }));*/
-        // Then add this message to database
-        // should check to see if online before attempting to do this?
-        const newMessage = messages[0] //this.state.messages[0]
+        // !!should check to see if online before attempting to do this!!
+        const newMessage = messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
             text: newMessage.text,
@@ -25,6 +21,7 @@ export default class Chat extends Component {
         })
     }
 
+    // Customize chat bubbles
     renderBubble(props) {
         let bubbleColor;
         if (this.props.route.params.color === '#090C08') bubbleColor = '#8A95A5'
@@ -44,19 +41,21 @@ export default class Chat extends Component {
         )
     }
 
+    // Customize Date shown upon entering chat
     renderDay(props) {
         return <Day {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
 
+    // Customize system messages
     renderSystemMessage(props) {
         return <SystemMessage {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
 
+    // Loops through documents in firestore collection and adds them to the state
+    // Called on mount (on 'messages' collection)
     onCollectionUpdate = (querySnapshot) => {
         const messages = [];
-        // go through each document
         querySnapshot.forEach((doc) => {
-            // get the QueryDocumentSnapshot's data
             var data = doc.data();
             messages.push({
                 _id: data._id,
@@ -137,6 +136,7 @@ export default class Chat extends Component {
             });
         }
 
+        // Keeping this to reference avatar/system user
         /*this.setState({
             messages: [
                 {
@@ -149,14 +149,7 @@ export default class Chat extends Component {
                         avatar: 'https://placeimg.com/140/140/any',
                     },
                 },
-                {
-                    _id: 2,
-                    text: `${name} has entered the chat`,
-                    createdAt: new Date(),
-                    system: true,
-                },
-            ],
-        })*/
+        */
     }
 
     componentWillUnmount() {
