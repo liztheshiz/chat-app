@@ -10,12 +10,12 @@ export default class Chat extends Component {
     // CUSTOM METHODS
     onSend(messages = []) {
         // First add new message to state
-        this.setState(previousState => ({
+        /*this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
-        }));
+        }));*/
         // Then add this message to database
         // should check to see if online before attempting to do this?
-        const newMessage = messages[messages.length - 1] //this.state.messages[0]
+        const newMessage = messages[0] //this.state.messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
             text: newMessage.text,
@@ -123,7 +123,7 @@ export default class Chat extends Component {
         this.referenceChatMessages = firebase.firestore().collection('messages');
 
         if (this.referenceChatMessages) {
-            this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
+            this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
         } else {
             this.setState({
                 messages: [
