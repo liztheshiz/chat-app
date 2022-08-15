@@ -76,6 +76,7 @@ export default class Chat extends Component {
         super();
         this.state = {
             messages: [],
+            uid: '',
         }
 
         const firebaseConfig = {
@@ -97,6 +98,7 @@ export default class Chat extends Component {
 
     render() {
         const { color } = this.props.route.params;
+        const { uid } = this.state;
 
         return (
             <View style={[styles.container, { backgroundColor: color }]}>
@@ -107,7 +109,7 @@ export default class Chat extends Component {
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
-                        _id: 2,
+                        _id: uid,
                     }}
                 />
                 {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
@@ -119,22 +121,34 @@ export default class Chat extends Component {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
-        this.referenceChatMessages = firebase.firestore().collection('messages');
+        // Check (anonymous) user authentication through firebase
+        this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+                await firebase.auth().signInAnonymously();
+            }
 
-        if (this.referenceChatMessages) {
-            this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
-        } else {
+            //update user state with currently active user data
             this.setState({
-                messages: [
-                    {
-                        _id: 1,
-                        text: `Unable to connect to chat`,
-                        createdAt: new Date(),
-                        system: true,
-                    },
-                ]
+                uid: user.uid,
             });
-        }
+
+            this.referenceChatMessages = firebase.firestore().collection('messages');
+
+            if (this.referenceChatMessages) {
+                this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
+            } else {
+                this.setState({
+                    messages: [
+                        {
+                            _id: 1,
+                            text: `Unable to connect to chat`,
+                            createdAt: new Date(),
+                            system: true,
+                        },
+                    ]
+                });
+            }
+        });
 
         // Keeping this to reference avatar/system user
         /*this.setState({
