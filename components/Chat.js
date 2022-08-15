@@ -168,6 +168,7 @@ export default class Chat extends Component {
 
     componentWillUnmount() {
         this.unsubscribe();
+        this.authUnsubscribe();
     }
 }
 
