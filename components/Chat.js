@@ -113,12 +113,6 @@ export default class Chat extends Component {
                 />
                 {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
             </View>
-
-            /*<ScrollView style={{ backgroundColor: color }}>
-            <View style={styles.container}>
-                <Text style={styles.text}>Chat Screen</Text>
-            </View>
-    </ScrollView>*/
         );
     }
 
