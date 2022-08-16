@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { GiftedChat, Bubble, SystemMessage, Day } from 'react-native-gifted-chat';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NetInfo from '@react-native-community/netinfo';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -152,14 +153,16 @@ export default class Chat extends Component {
                 await firebase.auth().signInAnonymously();
             }
 
-            //update user state with currently active user data
+            // Update user state with currently active user data
             this.setState({
                 uid: user.uid,
             });
 
+            // Get messages from firestore
             this.referenceChatMessages = firebase.firestore().collection('messages');
             this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
 
+            // Save messages to asyncStorage (local)
             this.saveMessages();
         });
 
