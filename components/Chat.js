@@ -42,6 +42,18 @@ export default class Chat extends Component {
         return <SystemMessage {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
     }
 
+    // Customize input toolbar
+    // Only displays if online!
+    renderInputToolbar(props) {
+        if (this.state.isConnected) {
+            return (
+                <InputToolbar
+                    {...props}
+                />
+            );
+        }
+    }
+
     // Adds message to firestore on send
     onSend(messages = []) {
         // !!should check to see if online before attempting to do this!!
@@ -100,10 +112,17 @@ export default class Chat extends Component {
     // LIFECYCLE METHODS
     constructor() {
         super();
+
         this.state = {
             messages: [],
             uid: '',
+            isConnected: false,
         }
+
+        // Check if device is online
+        NetInfo.fetch().then(connection => {
+            if (connection.isConnected) { this.setState({ isConnected: true }) }
+        });
 
         const firebaseConfig = {
             apiKey: "AIzaSyCInaMPfpqaogmo1HhyH6DJhHGwmYwr5t4",
