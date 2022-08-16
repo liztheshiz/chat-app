@@ -73,6 +73,15 @@ export default class Chat extends Component {
         });
     }
 
+    // Saves messages in asyncStorage (local)
+    async saveMessages() {
+        try {
+            await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     // Fetches messages from asyncStorage (local)
     async getMessages() {
         let messages = '';
