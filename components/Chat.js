@@ -3,23 +3,13 @@ import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { GiftedChat, Bubble, SystemMessage, Day } from 'react-native-gifted-chat';
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const firebase = require('firebase');
 require('firebase/firestore');
 
 export default class Chat extends Component {
     // CUSTOM METHODS
-    // Adds message to firestore on send
-    onSend(messages = []) {
-        // !!should check to see if online before attempting to do this!!
-        const newMessage = messages[0]
-        this.referenceChatMessages.add({
-            _id: newMessage._id,
-            text: newMessage.text,
-            createdAt: newMessage.createdAt,
-            user: newMessage.user,
-            system: false,
-        })
-    }
 
     // Customize chat bubbles
     renderBubble(props) {
@@ -49,6 +39,19 @@ export default class Chat extends Component {
     // Customize system messages
     renderSystemMessage(props) {
         return <SystemMessage {...props} textStyle={{ color: 'white', fontFamily: 'Poppins-Regular' }} />
+    }
+
+    // Adds message to firestore on send
+    onSend(messages = []) {
+        // !!should check to see if online before attempting to do this!!
+        const newMessage = messages[0]
+        this.referenceChatMessages.add({
+            _id: newMessage._id,
+            text: newMessage.text,
+            createdAt: newMessage.createdAt,
+            user: newMessage.user,
+            system: false,
+        })
     }
 
     // Loops through documents in firestore collection and adds them to the state
