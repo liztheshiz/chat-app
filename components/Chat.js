@@ -166,6 +166,10 @@ export default class Chat extends Component {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
+        // First load messages from asyncStorage
+        this.getMessages();
+
+        // Then check if online to sync with firestore and save any updated messages
         NetInfo.fetch().then(connection => {
             if (connection.isConnected) {
                 // Check (anonymous) user authentication through firebase
@@ -186,8 +190,6 @@ export default class Chat extends Component {
                     // Save messages to asyncStorage (local)
                     this.saveMessages();
                 });
-            } else {
-
             }
         });
     }
