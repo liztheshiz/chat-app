@@ -158,21 +158,9 @@ export default class Chat extends Component {
             });
 
             this.referenceChatMessages = firebase.firestore().collection('messages');
+            this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
 
-            if (this.referenceChatMessages) {
-                this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
-            } else {
-                this.setState({
-                    messages: [
-                        {
-                            _id: 1,
-                            text: `Unable to connect to chat`,
-                            createdAt: new Date(),
-                            system: true,
-                        },
-                    ]
-                });
-            }
+            this.saveMessages();
         });
 
         // Keeping this to reference avatar/system user
