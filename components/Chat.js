@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { GiftedChat, Bubble, SystemMessage, Day } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, SystemMessage, Day, InputToolbar } from 'react-native-gifted-chat';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from '@react-native-community/netinfo';
@@ -64,7 +64,7 @@ export default class Chat extends Component {
             createdAt: newMessage.createdAt,
             user: newMessage.user,
             system: false,
-        })
+        });
     }
 
     // Loops through documents in firestore collection and adds them to the state
@@ -84,12 +84,17 @@ export default class Chat extends Component {
         this.setState({
             messages,
         });
+
+        // Sync fetched messages with asyncStorage (local)
+        this.saveMessages();
     }
 
     // Saves messages in asyncStorage (local)
     async saveMessages() {
+        let messages = this.state.messages;
+
         try {
-            await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+            await AsyncStorage.setItem('messages', JSON.stringify(messages));
         } catch (error) {
             console.log(error.message);
         }
@@ -119,11 +124,6 @@ export default class Chat extends Component {
             isConnected: false,
         }
 
-        // Check if device is online
-        NetInfo.fetch().then(connection => {
-            if (connection.isConnected) { this.setState({ isConnected: true }) }
-        });
-
         const firebaseConfig = {
             apiKey: "AIzaSyCInaMPfpqaogmo1HhyH6DJhHGwmYwr5t4",
             authDomain: "chat-app-2c26d.firebaseapp.com",
@@ -151,12 +151,14 @@ export default class Chat extends Component {
                     renderBubble={this.renderBubble.bind(this)}
                     renderDay={this.renderDay.bind(this)}
                     renderSystemMessage={this.renderSystemMessage.bind(this)}
+                    renderInputToolbar={this.renderInputToolbar.bind(this)}
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
                         _id: uid,
                     }}
                 />
+                {/* Fixes keyboard overlap on some Android devices */}
                 {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
             </View>
         );
@@ -172,6 +174,8 @@ export default class Chat extends Component {
         // Then check if online to sync with firestore and save any updated messages
         NetInfo.fetch().then(connection => {
             if (connection.isConnected) {
+                this.setState({ isConnected: true });
+
                 // Check (anonymous) user authentication through firebase
                 this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
                     if (!user) {
@@ -186,17 +190,16 @@ export default class Chat extends Component {
                     // Get messages from firestore
                     this.referenceChatMessages = firebase.firestore().collection('messages');
                     this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
-
-                    // Save messages to asyncStorage (local)
-                    this.saveMessages();
                 });
             }
         });
     }
 
     componentWillUnmount() {
-        this.unsubscribe();
-        this.authUnsubscribe();
+        if (this.state.isConnected) {
+            this.unsubscribe();
+            this.authUnsubscribe();
+        }
     }
 }
 
