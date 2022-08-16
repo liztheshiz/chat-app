@@ -56,7 +56,6 @@ export default class Chat extends Component {
 
     // Adds message to firestore on send
     onSend(messages = []) {
-        // !!should check to see if online before attempting to do this!!
         const newMessage = messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
