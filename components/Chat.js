@@ -147,39 +147,30 @@ export default class Chat extends Component {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
-        // Check (anonymous) user authentication through firebase
-        this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
-            if (!user) {
-                await firebase.auth().signInAnonymously();
+        NetInfo.fetch().then(connection => {
+            if (connection.isConnected) {
+                // Check (anonymous) user authentication through firebase
+                this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+                    if (!user) {
+                        await firebase.auth().signInAnonymously();
+                    }
+
+                    // Update user state with currently active user data
+                    this.setState({
+                        uid: user.uid,
+                    });
+
+                    // Get messages from firestore
+                    this.referenceChatMessages = firebase.firestore().collection('messages');
+                    this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
+
+                    // Save messages to asyncStorage (local)
+                    this.saveMessages();
+                });
+            } else {
+
             }
-
-            // Update user state with currently active user data
-            this.setState({
-                uid: user.uid,
-            });
-
-            // Get messages from firestore
-            this.referenceChatMessages = firebase.firestore().collection('messages');
-            this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
-
-            // Save messages to asyncStorage (local)
-            this.saveMessages();
         });
-
-        // Keeping this to reference avatar/system user
-        /*this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-        */
     }
 
     componentWillUnmount() {
@@ -193,3 +184,18 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 })
+
+// Keeping this to reference avatar/system user
+/*this.setState({
+    messages: [
+        {
+            _id: 1,
+            text: 'Hello developer',
+            createdAt: new Date(),
+            user: {
+                _id: 2,
+                name: 'React Native',
+                avatar: 'https://placeimg.com/140/140/any',
+            },
+        },
+*/
