@@ -71,7 +71,20 @@ export default class Chat extends Component {
         this.setState({
             messages,
         });
-    };
+    }
+
+    // Fetches messages from asyncStorage (local)
+    async getMessages() {
+        let messages = '';
+        try {
+            messages = await AsyncStorage.getItem('messages') || [];
+            this.setState({
+                messages: JSON.parse(messages)
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
 
     // LIFECYCLE METHODS
