@@ -24,10 +24,14 @@ export default class Start extends Component {
                         <View style={styles.colorWrapper}>
                             <Text style={[styles.smallText, styles.label]}>Choose Background Color:</Text>
                             <View style={styles.colors}>
-                                <TouchableOpacity style={[styles.color, styles.color1]} onPress={() => this.setState({ color: '#090C08' })} />
-                                <TouchableOpacity style={[styles.color, styles.color2]} onPress={() => this.setState({ color: '#474056' })} />
-                                <TouchableOpacity style={[styles.color, styles.color3]} onPress={() => this.setState({ color: '#8A95A5' })} />
-                                <TouchableOpacity style={[styles.color, styles.color4]} onPress={() => this.setState({ color: '#B9C6AE' })} />
+                                <TouchableOpacity style={(this.state.color === '#090C08') ? [styles.color, styles.selected, styles.color1] : [styles.color, styles.color1]}
+                                    onPress={() => this.setState({ color: '#090C08' })} />
+                                <TouchableOpacity style={(this.state.color === '#474056') ? [styles.color, styles.selected, styles.color2] : [styles.color, styles.color2]}
+                                    onPress={() => this.setState({ color: '#474056' })} />
+                                <TouchableOpacity style={(this.state.color === '#8A95A5') ? [styles.color, styles.selected, styles.color3] : [styles.color, styles.color3]}
+                                    onPress={() => this.setState({ color: '#8A95A5' })} />
+                                <TouchableOpacity style={(this.state.color === '#B9C6AE') ? [styles.color, styles.selected, styles.color4] : [styles.color, styles.color4]}
+                                    onPress={() => this.setState({ color: '#B9C6AE' })} />
                             </View>
                         </View>
                         <View style={styles.buttonWrapper}>
@@ -98,6 +102,10 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         marginRight: 30,
+    },
+    selected: {
+        borderWidth: '3px',
+        borderColor: 'lightgrey',
     },
     color1: {
         backgroundColor: '#090C08',
