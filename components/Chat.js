@@ -221,6 +221,8 @@ export default class Chat extends Component {
             } else {
                 // If offline, set userID from local storage
                 this.getUser();
+                // Add offline message
+                this.props.navigation.setOptions({ title: `${name} (offline)` });
             }
         });
     }
