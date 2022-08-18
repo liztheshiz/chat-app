@@ -56,7 +56,6 @@ export default class Chat extends Component {
 
     // Adds message to firestore on send
     onSend(messages = []) {
-        // !!should check to see if online before attempting to do this!!
         const newMessage = messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
@@ -81,12 +80,37 @@ export default class Chat extends Component {
                 system: data.system,
             });
         });
+
         this.setState({
             messages,
         });
 
         // Sync fetched messages with asyncStorage (local)
         this.saveMessages();
+    }
+
+    // Saves userID in asyncStorage (local)
+    async saveUser() {
+        let uid = this.state.uid;
+
+        try {
+            await AsyncStorage.setItem('uid', uid);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    // Fetches uid from asyncStorage (local)
+    async getUser() {
+        let user = '';
+        try {
+            user = await AsyncStorage.getItem('uid') || [];
+            this.setState({
+                uid: user
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     // Saves messages in asyncStorage (local)
@@ -187,10 +211,18 @@ export default class Chat extends Component {
                         uid: user.uid,
                     });
 
+                    // Save userID to local storage
+                    this.saveUser();
+
                     // Get messages from firestore
                     this.referenceChatMessages = firebase.firestore().collection('messages');
                     this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
                 });
+            } else {
+                // If offline, set userID from local storage
+                this.getUser();
+                // Add offline message
+                this.props.navigation.setOptions({ title: `${name} (offline)` });
             }
         });
     }
