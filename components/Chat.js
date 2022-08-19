@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { StyleSheet } from 'react-native';
+
 import { GiftedChat, Bubble, SystemMessage, Day, InputToolbar } from 'react-native-gifted-chat';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from '@react-native-community/netinfo';
+
+import CustomActions from './CustomActions';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -53,6 +56,11 @@ export default class Chat extends Component {
             );
         }
     }
+
+    // Renders action button to send images and location
+    renderCustomActions = (props) => {
+        return <CustomActions {...props} />;
+    };
 
     // Adds message to firestore on send
     onSend(messages = []) {
@@ -176,6 +184,7 @@ export default class Chat extends Component {
                     renderDay={this.renderDay.bind(this)}
                     renderSystemMessage={this.renderSystemMessage.bind(this)}
                     renderInputToolbar={this.renderInputToolbar.bind(this)}
+                    renderActions={this.renderCustomActions}
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
