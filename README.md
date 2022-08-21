@@ -16,16 +16,18 @@ Chat App was developed to provide an opportunity to learn about native app devel
 - Expo
 - Expo Font
 - Expo Image Picker
+- Expo Location
 - Expo Permissions
 - Expo Status Bar
 - Firebase
 - React
-- React-DOM
-- React-Native
-- React-Native-Gesture-Handler
-- React-Native-Gifted-Chat
-- React-Native-Reanimated
-- React-Native-Safe-Area-Context
-- React-Native-Screens
-- React-Native-Web
-- React-Navigation
+- React DOM
+- React Native
+- React Native Gesture-Handler
+- React Native Gifted Chat
+- React Native Maps
+- React Native Reanimated
+- React Native Safe Area Context
+- React-Native Screens
+- React Native Web
+- React Navigation

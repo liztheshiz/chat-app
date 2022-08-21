@@ -6,6 +6,7 @@ import firebase from 'firebase';
 
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
 
 export default class CustomActions extends React.Component {
     uploadImageFetch = async (uri) => {
@@ -65,6 +66,23 @@ export default class CustomActions extends React.Component {
         }
     }
 
+    getLocation = async () => {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION_FOREGROUND);
+
+        if (status === 'granted') {
+            let result = await Location.getCurrentPositionAsync({}).catch(err => console.log(err));
+
+            if (result) {
+                this.props.onSend({
+                    location: {
+                        longitude: result.coords.longitude,
+                        latitude: result.coords.latitude,
+                    },
+                });
+            }
+        }
+    }
+
     onActionPress = () => {
         const options = ['Choose From Library', 'Take Picture', 'Send Location', 'Cancel'];
         const cancelButtonIndex = options.length - 1;
@@ -83,6 +101,7 @@ export default class CustomActions extends React.Component {
                         return this.takePhoto();
                     case 2:
                         console.log('user wants to get their location');
+                        return this.getLocation();
                     default:
                 }
             },
