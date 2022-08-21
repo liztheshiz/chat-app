@@ -31,6 +31,11 @@ export default class Chat extends Component {
                         backgroundColor: bubbleColor
                     }
                 }}
+                textStyle={{
+                    right: {
+                        color: 'white'
+                    }
+                }}
             />
         )
     }
@@ -205,6 +210,9 @@ export default class Chat extends Component {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
 
+        // Get user before loading messages so they load on correct side of screen
+        this.getUser();
+
         // First load messages from asyncStorage
         this.getMessages();
 
@@ -232,8 +240,6 @@ export default class Chat extends Component {
                     this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
                 });
             } else {
-                // If offline, set userID from local storage
-                this.getUser();
                 // Add offline message
                 this.props.navigation.setOptions({ title: `${name} (offline)` });
             }

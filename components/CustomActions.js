@@ -80,7 +80,7 @@ export default class CustomActions extends React.Component {
                         return this.pickImage();
                     case 1:
                         console.log('user wants to take a photo');
-                        return;
+                        return this.takePhoto();
                     case 2:
                         console.log('user wants to get their location');
                     default:
