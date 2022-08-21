@@ -67,9 +67,11 @@ export default class Chat extends Component {
         const newMessage = messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
-            text: newMessage.text,
+            text: newMessage.text || '',
             createdAt: newMessage.createdAt,
             user: newMessage.user,
+            image: newMessage.image || null,
+            location: newMessage.location || null,
             system: false,
         });
     }
@@ -82,9 +84,11 @@ export default class Chat extends Component {
             var data = doc.data();
             messages.push({
                 _id: data._id,
-                text: data.text,
+                text: data.text || '',
                 createdAt: data.createdAt.toDate(),
                 user: data.user,
+                image: data.image || null,
+                location: data.location || null,
                 system: data.system,
             });
         });
