@@ -6,9 +6,13 @@ This is a native mobile app built using React Native that allows users to enter 
 
 ## Purpose of this App
 
-Chat App was developed to provide an opportunity to learn about native app development, and hone the relevant skills.
+Chat App was developed to practice native app development using React Native.
 
-## Dependencies
+## Setup Manual
+
+
+
+## Complete List of Dependencies
 
 - HTML5
 - CSS3
