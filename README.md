@@ -14,11 +14,17 @@ Chat App was developed to provide an opportunity to learn about native app devel
 - CSS3
 - JavaScript (ES6)
 - Expo
+- Expo Font
+- Expo Image Picker
+- Expo Permissions
 - Expo Status Bar
+- Firebase
 - React
 - React-DOM
 - React-Native
 - React-Native-Gesture-Handler
+- React-Native-Gifted-Chat
+- React-Native-Reanimated
 - React-Native-Safe-Area-Context
 - React-Native-Screens
 - React-Native-Web
