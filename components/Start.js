@@ -25,17 +25,36 @@ export default class Start extends Component {
                             <Text style={[styles.smallText, styles.label]}>Choose Background Color:</Text>
                             <View style={styles.colors}>
                                 <TouchableOpacity style={(this.state.color === '#090C08') ? [styles.color, styles.selected, styles.color1] : [styles.color, styles.color1]}
-                                    onPress={() => this.setState({ color: '#090C08' })} />
+                                    onPress={() => this.setState({ color: '#090C08' })}
+                                    accessible={true}
+                                    accessibilityLabel="color option: black (default)"
+                                    accessibilityHint="choose this to be the background color of your chat screen"
+                                    accessibilityRole="button" />
                                 <TouchableOpacity style={(this.state.color === '#474056') ? [styles.color, styles.selected, styles.color2] : [styles.color, styles.color2]}
-                                    onPress={() => this.setState({ color: '#474056' })} />
+                                    onPress={() => this.setState({ color: '#474056' })}
+                                    accessible={true}
+                                    accessibilityLabel="color option: purple"
+                                    accessibilityHint="choose this to be the background color of your chat screen"
+                                    accessibilityRole="button" />
                                 <TouchableOpacity style={(this.state.color === '#8A95A5') ? [styles.color, styles.selected, styles.color3] : [styles.color, styles.color3]}
-                                    onPress={() => this.setState({ color: '#8A95A5' })} />
+                                    onPress={() => this.setState({ color: '#8A95A5' })}
+                                    accessible={true}
+                                    accessibilityLabel="color option: blue"
+                                    accessibilityHint="choose this to be the background color of your chat screen"
+                                    accessibilityRole="button" />
                                 <TouchableOpacity style={(this.state.color === '#B9C6AE') ? [styles.color, styles.selected, styles.color4] : [styles.color, styles.color4]}
-                                    onPress={() => this.setState({ color: '#B9C6AE' })} />
+                                    onPress={() => this.setState({ color: '#B9C6AE' })}
+                                    accessible={true}
+                                    accessibilityLabel="color option: green"
+                                    accessibilityHint="choose this to be the background color of your chat screen"
+                                    accessibilityRole="button" />
                             </View>
                         </View>
                         <View style={styles.buttonWrapper}>
-                            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, color: this.state.color })}>
+                            <TouchableOpacity style={styles.button}
+                                onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, color: this.state.color })}
+                                accessible={true}
+                                accessibilityRole="button">
                                 <Text style={styles.buttonText}>Start Chatting</Text>
                             </TouchableOpacity>
                         </View>
