@@ -6,7 +6,7 @@ This is a native mobile app built using React Native that allows users to enter 
 
 ## Purpose of this App
 
-Chat App was developed to practice native app development using React Native.
+Chat App was developed to practice native app development using React Native. It includes features like switching between views, storing data locally for use offline, asking permission for access to camera and location, and accessing camera, camera roll, and location services.
 
 ## Setup Manual
 
@@ -23,7 +23,7 @@ Chat App was developed to practice native app development using React Native.
     - To test in Android Emulator, first install [Android Studio](https://developer.android.com/studio), then then press `a` while expo is running.
     - (Macs only) To test in iOS Simulator, first ensure [XCode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) is installed, and then press `i` while expo is running.
     - To test on any Android or iOS device, first install the [Expo Go](https://expo.dev/client) app, and then scan the QR code generated in your terminal when Expo is running (using the Expo Go app on Android or Camera on iOS). Both the local machine and the mobile device must be connected to the same network or plugged into each other in order to emulate the app on the mobile device.
-    
+
 Note: The app is connected to its own Firebase database run by the developer, but feel free to make your own database and connect it to your local version of the app to create a private chat!
 
 ## Complete List of Dependencies
