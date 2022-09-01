@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { StyleSheet } from 'react-native';
+
 import { GiftedChat, Bubble, SystemMessage, Day, InputToolbar } from 'react-native-gifted-chat';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from '@react-native-community/netinfo';
+
+import MapView from 'react-native-maps';
+
+import CustomActions from './CustomActions';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -26,6 +31,11 @@ export default class Chat extends Component {
                 wrapperStyle={{
                     right: {
                         backgroundColor: bubbleColor
+                    }
+                }}
+                textStyle={{
+                    right: {
+                        color: 'white'
                     }
                 }}
             />
@@ -54,14 +64,44 @@ export default class Chat extends Component {
         }
     }
 
+    // Renders action button to send images and location
+    renderCustomActions = (props) => {
+        return <CustomActions {...props} />;
+    };
+
+    renderCustomView(props) {
+        const { currentMessage } = props;
+        if (currentMessage.location) {
+            return (
+                <MapView
+                    style={{
+                        width: 150,
+                        height: 100,
+                        borderRadius: 13,
+                        margin: 3
+                    }}
+                    region={{
+                        latitude: currentMessage.location.latitude,
+                        longitude: currentMessage.location.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                />
+            );
+        }
+        return null;
+    }
+
     // Adds message to firestore on send
     onSend(messages = []) {
         const newMessage = messages[0]
         this.referenceChatMessages.add({
             _id: newMessage._id,
-            text: newMessage.text,
+            text: newMessage.text || '',
             createdAt: newMessage.createdAt,
             user: newMessage.user,
+            image: newMessage.image || null,
+            location: newMessage.location || null,
             system: false,
         });
     }
@@ -74,9 +114,11 @@ export default class Chat extends Component {
             var data = doc.data();
             messages.push({
                 _id: data._id,
-                text: data.text,
+                text: data.text || '',
                 createdAt: data.createdAt.toDate(),
                 user: data.user,
+                image: data.image || null,
+                location: data.location || null,
                 system: data.system,
             });
         });
@@ -176,6 +218,8 @@ export default class Chat extends Component {
                     renderDay={this.renderDay.bind(this)}
                     renderSystemMessage={this.renderSystemMessage.bind(this)}
                     renderInputToolbar={this.renderInputToolbar.bind(this)}
+                    renderActions={this.renderCustomActions}
+                    renderCustomView={this.renderCustomView}
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
@@ -191,6 +235,9 @@ export default class Chat extends Component {
     componentDidMount() {
         let { name } = this.props.route.params;
         this.props.navigation.setOptions({ title: name });
+
+        // Get user before loading messages so they load on correct side of screen
+        this.getUser();
 
         // First load messages from asyncStorage
         this.getMessages();
@@ -219,8 +266,6 @@ export default class Chat extends Component {
                     this.unsubscribe = this.referenceChatMessages.orderBy('createdAt', 'desc').onSnapshot(this.onCollectionUpdate);
                 });
             } else {
-                // If offline, set userID from local storage
-                this.getUser();
                 // Add offline message
                 this.props.navigation.setOptions({ title: `${name} (offline)` });
             }
